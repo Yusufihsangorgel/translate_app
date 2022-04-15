@@ -4,7 +4,7 @@ import 'package:translate_app/models/translate_model.dart';
 import 'package:http/http.dart' as http;
 
 class TranslateService {
-  Future<Translate> translate(String from, String to, String message) async {
+  Future<List> getTranslate(String from, String to, String message) async {
     final response = await http.post(
         Uri.parse('https://rapid-translate-multi-traduction.p.rapidapi.com/t'),
         headers: {
@@ -17,7 +17,7 @@ class TranslateService {
           "q": message,
         });
     if (response.statusCode == 200) {
-      return Translate.fromJson(json.decode(response.body));
+      return json.decode(response.body) as List;
     } else {
       throw Exception('Failed to load translate');
     }
