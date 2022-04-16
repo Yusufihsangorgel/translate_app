@@ -1,4 +1,4 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -20,23 +20,23 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
         add(NoInternetEvent());
       } else {
         print('yes internet');
-        add(LoadApiEvent());
+        add(LoginButtonEvent());
       }
     });
 
-    on<LoadApiEvent>((event, emit) async {
+    on<TranslateFieldEvent>(
+        (event, emit) => emit(state.copyWith(message: event.message)));
+
+    on<CountryFieldEvent>((event, emit) => emit(state.copyWith(to: event.to)));
+
+    on<LoginButtonEvent>((event, emit) async {
       emit(TranslateLoadingState());
-      emit(TranslateRequestState(
-        '',
-        '',
-        '',
-      ));
 
       final translate = await _translateService.getTranslate(
-        '',
-        '',
-        '',
+        event.to,
+        event.text,
       );
+      emit(TranslateLoadedState(translate.toString()));
     });
 
     on<NoInternetEvent>((event, emit) {

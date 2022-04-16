@@ -1,20 +1,14 @@
 class Translate {
-  final String from;
+  final String text;
   final String to;
-  final String e;
-  final List<String> message;
 
   Translate({
-    required this.from,
+    required this.text,
     required this.to,
-    required this.e,
-    required this.message,
   });
 
   factory Translate.fromJson(Map<String, dynamic> json) => Translate(
-        from: json["from"],
+        text: json["text"],
         to: json["to"],
-        e: json["e"],
-        message: List<String>.from(json["q"].map((x) => x)),
       );
 }
