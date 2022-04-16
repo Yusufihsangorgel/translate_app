@@ -20,7 +20,7 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
         add(NoInternetEvent());
       } else {
         print('yes internet');
-        add(LoginButtonEvent());
+        add(TranslateButtonEvent());
       }
     });
 
@@ -29,12 +29,12 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
 
     on<CountryFieldEvent>((event, emit) => emit(state.copyWith(to: event.to)));
 
-    on<LoginButtonEvent>((event, emit) async {
+    on<TranslateButtonEvent>((event, emit) async {
       emit(TranslateLoadingState());
 
       final translate = await _translateService.getTranslate(
-        event.to,
-        event.text,
+        state.to,
+        state.message,
       );
       emit(TranslateLoadedState(translate.toString()));
     });
