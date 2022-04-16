@@ -1,7 +1,7 @@
 part of 'translate_bloc.dart';
 
 @immutable
-abstract class TranslateState extends Equatable {
+class TranslateState extends Equatable {
   final String message;
   final String to;
 
@@ -11,24 +11,19 @@ abstract class TranslateState extends Equatable {
   List<Object> get props => [message, to];
 
   TranslateState copyWith({String? message, String? to}) {
-    return TranslateLoadingState(
+    return TranslateState(
       message: message ?? this.message,
       to: to ?? this.to,
     );
   }
 }
 
-class TranslateLoadingState extends TranslateState {
-  final String message;
-  final String to;
-
-  const TranslateLoadingState({this.message = '', this.to = ''});
-}
+class TranslateLoadingState extends TranslateState {}
 
 class TranslateLoadedState extends TranslateState {
-  final String text;
+  final List<Translate> translate;
 
-  const TranslateLoadedState(this.text);
+  const TranslateLoadedState(this.translate);
 }
 
 class TranslateNoInternetState extends TranslateState {}

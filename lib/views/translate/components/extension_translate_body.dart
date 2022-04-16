@@ -49,7 +49,7 @@ extension on TranslateBody {
             width: context.width(0.8),
             height: context.height(0.09),
             padding: const EdgeInsets.all(8.0),
-            child: Text(state.text),
+            child: Text(state.translate[0].text),
           );
         } else {
           return Container(

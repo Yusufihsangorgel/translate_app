@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:translate_app/models/translate_model.dart';
 import 'package:translate_app/services/connectivity_services.dart';
 import 'package:translate_app/services/translate_services.dart';
 
@@ -36,7 +37,7 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
         state.to,
         state.message,
       );
-      emit(TranslateLoadedState(translate.toString()));
+      emit(TranslateLoadedState(translate));
     });
 
     on<NoInternetEvent>((event, emit) {
