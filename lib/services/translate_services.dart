@@ -33,7 +33,6 @@ class TranslateService {
       print(post2.toString());
       final json = post2.map((e) => Translate.fromJson(e)).toList();
       print("burda takıldım 2");
-      print(json);
       return json;
     } else {
       throw Exception('Failed to load translate');

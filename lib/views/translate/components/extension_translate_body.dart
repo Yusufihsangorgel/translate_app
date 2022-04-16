@@ -23,35 +23,34 @@ extension on TranslateBody {
   }
 
   Widget _translateField(BuildContext context) {
-    return Container(
-      width: context.width(0.8),
-      height: context.height(0.09),
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Translate',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
+    return BlocBuilder<TranslateBloc, TranslateState>(
+      builder: (context, state) {
+        return Container(
+          width: context.width(0.8),
+          height: context.height(0.09),
+          padding: const EdgeInsets.all(8.0),
+          child: TextFormField(
+            decoration: InputDecoration(
+              hintText: 'Translate',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+            onChanged: (message) {
+              context.read<TranslateBloc>().add(TranslateFieldEvent(message));
+              print(message + "  textfield");
+              print(state.message + "  bloc");
+            },
           ),
-        ),
-        onChanged: (message) {
-          context.read<TranslateBloc>().add(TranslateFieldEvent(message));
-        },
-      ),
+        );
+      },
     );
   }
 
   BlocBuilder<TranslateBloc, TranslateState> get _translateBilgi {
     return BlocBuilder<TranslateBloc, TranslateState>(
       builder: (context, state) {
-        if (state is TranslateLoadedState) {
-          return Container(
-            width: context.width(0.8),
-            height: context.height(0.09),
-            padding: const EdgeInsets.all(8.0),
-            child: Text(state.translate[0].text),
-          );
-        } else {
+        if (state is TranslateLoadingState) {
           return Container(
             decoration: BoxDecoration(
               color: Colors.grey,
@@ -69,11 +68,40 @@ extension on TranslateBody {
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
-                  "anan",
+                  state.message,
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 )),
               ),
             ),
+          );
+        }
+        if (state is TranslateLoadedState) {
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                width: context.width(0.76),
+                height: context.height(0.06),
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: Text(
+                  state.translate[0].text,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                )),
+              ),
+            ),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
           );
         }
       },
