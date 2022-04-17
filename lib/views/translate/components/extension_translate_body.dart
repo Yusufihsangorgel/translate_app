@@ -1,49 +1,26 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:translate_app/logic/bloc/translate_bloc.dart';
 import 'package:translate_app/logic/utils/extension_media_query.dart';
-
+import 'dart:io' show Platform;
 part 'translate_body.dart';
 
-extension on TranslateBody {
+extension on _TranslateBodyState {
   AppBar _appBar() {
     return AppBar(
-      title: const Text('Login Page'),
+      backgroundColor: Colors.black,
+      title: const Text('Translate App'),
     );
   }
 
   Widget _image(BuildContext context) {
     const url =
-        'https://cdn.pixabay.com/photo/2021/06/07/13/46/user-6318008_960_720.png';
+        'https://thumbs.dreamstime.com/b/simple-thin-line-translator-logo-concept-isolated-white-background-vector-illustration-155179164.jpg';
     return Image.network(
       url,
       width: context.width(0.9),
-      height: context.height(0.35),
-    );
-  }
-
-  Widget _translateField(BuildContext context) {
-    return BlocBuilder<TranslateBloc, TranslateState>(
-      builder: (context, state) {
-        return Container(
-          width: context.width(0.8),
-          height: context.height(0.09),
-          padding: const EdgeInsets.all(8.0),
-          child: TextFormField(
-            decoration: InputDecoration(
-              hintText: 'Translate',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-              ),
-            ),
-            onChanged: (message) {
-              context.read<TranslateBloc>().add(TranslateFieldEvent(message));
-              print(message + "  textfield");
-              print(state.message + "  bloc");
-            },
-          ),
-        );
-      },
+      height: context.height(0.30),
     );
   }
 
@@ -51,28 +28,8 @@ extension on TranslateBody {
     return BlocBuilder<TranslateBloc, TranslateState>(
       builder: (context, state) {
         if (state is TranslateLoadingState) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25),
-                ),
-                width: context.width(0.76),
-                height: context.height(0.06),
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                    child: Text(
-                  state.message,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                )),
-              ),
-            ),
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
         if (state is TranslateLoadedState) {
@@ -89,27 +46,231 @@ extension on TranslateBody {
                   borderRadius: BorderRadius.circular(25),
                 ),
                 width: context.width(0.76),
-                height: context.height(0.06),
+                height: context.height(0.2),
                 padding: const EdgeInsets.all(8.0),
                 child: Center(
                     child: Text(
                   state.translate[0].text,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 15),
                 )),
               ),
             ),
           );
         } else {
-          return Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                width: context.width(0.76),
+                height: context.height(0.2),
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                    child: Text(
+                  "...",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 15),
+                )),
+              ),
+            ),
           );
         }
       },
     );
   }
 
-  Widget _loginButton(BuildContext context) => ElevatedButton(
-      onPressed: () =>
-          BlocProvider.of<TranslateBloc>(context).add(TranslateButtonEvent()),
-      child: const Text('Translate'));
+  Widget _translateField(BuildContext context) {
+    return BlocBuilder<TranslateBloc, TranslateState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(left: 47, right: 47, bottom: 10),
+          child: TextFormField(
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
+              hintText: 'Translate',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+            onChanged: (message) {
+              setState(() {
+                context
+                    .read<TranslateBloc>()
+                    .add(TranslateFieldEvent(message, country));
+                print(country);
+              });
+
+              print(message + "  textfield");
+              print(state.message + "  bloc");
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _loginButton(BuildContext context) {
+    return BlocBuilder<TranslateBloc, TranslateState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                if (Platform.isIOS) {
+                  showCupertinoDialog(
+                    context: context,
+                    builder: (_) => CupertinoAlertDialog(
+                      title: const Text(
+                          'Yazdığınız Cümle Aşağıda Seçeceğiniz Dile Çevrilecektir'),
+                      content: const Text('Dil Seçiniz'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "tr";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'tr');
+                          },
+                          child: const Text('Türkçe'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "en";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: const Text('İngilizce'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "de";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+
+                            Navigator.pop(context, 'de');
+                          },
+                          child: const Text('Almanca'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "fr";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'fr');
+                          },
+                          child: const Text('Fransızca'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "ar";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'ar');
+                          },
+                          child: const Text('Arapça'),
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (Platform.isAndroid) {
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text(
+                          'Yazdığınız Cümle Aşağıda Seçeceğiniz Dile Çevrilecektir'),
+                      content: const Text('Dil Seçiniz'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "tr";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'tr');
+                          },
+                          child: const Text('Türkçe'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "en";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context);
+                          },
+                          child: const Text('İngilizce'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "de";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+
+                            Navigator.pop(context, 'de');
+                          },
+                          child: const Text('Almanca'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "fr";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'fr');
+                          },
+                          child: const Text('Fransızca'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              country = "ar";
+                              context.read<TranslateBloc>().add(
+                                  TranslateFieldEvent(state.message, country));
+                            });
+                            Navigator.pop(context, 'ar');
+                          },
+                          child: const Text('Arapça'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+              child: const Text('Dil Seç'),
+            ),
+            Text(country == "" ? "Seçili dil : tr" : "Seçili dil : $country",
+                style:
+                    const TextStyle(fontWeight: FontWeight.w500, fontSize: 15)),
+          ],
+        );
+      },
+    );
+  }
 }

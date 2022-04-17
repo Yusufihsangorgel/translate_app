@@ -10,9 +10,6 @@ part 'translate_event.dart';
 part 'translate_state.dart';
 
 class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
-  // TranslateBloc() : super(const TranslateState()) {
-  //   final _translateService = TranslateService();
-
   final TranslateService _translateService;
   final ConnectivityService _connectivityService;
 
@@ -24,29 +21,20 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
         add(NoInternetEvent());
       } else {
         print('yes internet');
-        add(TranslateButtonEvent());
+        add(const TranslateFieldEvent("", ""));
       }
     });
 
     on<TranslateFieldEvent>((event, emit) async {
       emit(TranslateLoadingState());
       emit(state.copyWith(message: event.message));
-      final anan = await _translateService.getTranslate(
-        state.to,
-        state.message,
+
+      final translate = await _translateService.getTranslate(
+        event.to,
+        event.message,
       );
       print(state.message);
-      emit(TranslateLoadedState(anan));
-    });
-
-    on<CountryFieldEvent>((event, emit) => emit(state.copyWith(to: event.to)));
-
-    on<TranslateButtonEvent>((event, emit) async {
-      final anan = await _translateService.getTranslate(
-        state.to,
-        state.message,
-      );
-      emit(TranslateLoadedState(anan));
+      emit(TranslateLoadedState(translate));
     });
 
     on<NoInternetEvent>((event, emit) {

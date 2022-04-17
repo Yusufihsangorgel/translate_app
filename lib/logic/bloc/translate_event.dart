@@ -7,30 +7,13 @@ abstract class TranslateEvent extends Equatable {
   List<Object> get props => [];
 }
 
-// class RequestEvent extends TranslateEvent {
-//   final String text;
-//   final String to;
-
-//   const RequestEvent(this.text, this.to);
-// }
-
-// class LoadApiEvent extends TranslateEvent {
-//   final String text;
-//   final String to;
-
-//   const LoadApiEvent(this.text, this.to);
-// }
-
 class TranslateFieldEvent extends TranslateEvent {
   final String message;
-  const TranslateFieldEvent(this.message);
-}
-
-class CountryFieldEvent extends TranslateEvent {
   final String to;
-
-  const CountryFieldEvent(this.to);
+  const TranslateFieldEvent(this.message, this.to);
 }
+
+class CountryFieldEvent extends TranslateEvent {}
 
 class TranslateButtonEvent extends TranslateEvent {
   //Performanslı olması için yapıyoruz.

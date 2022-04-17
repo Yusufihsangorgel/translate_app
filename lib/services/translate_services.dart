@@ -10,7 +10,7 @@ class TranslateService {
     final uri =
         Uri.parse('https://microsoft-translator-text.p.rapidapi.com/translate')
             .replace(queryParameters: <String, String>{
-      'to': 'tr',
+      if (to == "") 'to': 'tr' else 'to': '$to',
       'api-version': '3.0',
       'profanityAction': 'NoAction',
       'textType': 'plain',
@@ -26,13 +26,13 @@ class TranslateService {
             : '[{"Text":"$message"}]');
     if (response.statusCode == 200) {
       final post = jsonDecode(response.body);
-      print(post.toString());
-      print("burda takıldım 0");
+      // print(post.toString());
+      // print("burda takıldım 0");
       final post2 = post[0]["translations"] as List;
-      print("burda takıldım 1");
-      print(post2.toString());
+      // print("burda takıldım 1");
+      // print(post2.toString());
       final json = post2.map((e) => Translate.fromJson(e)).toList();
-      print("burda takıldım 2");
+      // print("burda takıldım 2");
       return json;
     } else {
       throw Exception('Failed to load translate');

@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
             create: (context) => TranslateBloc(
               RepositoryProvider.of<TranslateService>(context),
               RepositoryProvider.of<ConnectivityService>(context),
-            )..add(TranslateButtonEvent()),
+            )..add(const TranslateFieldEvent("", "")),
           ),
         ],
         child: MaterialApp(
