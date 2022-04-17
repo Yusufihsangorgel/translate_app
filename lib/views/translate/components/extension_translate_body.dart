@@ -121,7 +121,7 @@ extension on _TranslateBodyState {
             decoration: InputDecoration(
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 70.0, horizontal: 20.0),
-              hintText: 'Translate',
+              labelText: 'İstediğiniz dilde yazabilirsiniz',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
               ),
@@ -297,7 +297,7 @@ extension on _TranslateBodyState {
                   );
                 }
               },
-              child: const Text('Dil Seç'),
+              child: const Text('Çevrilicek Dili Seç'),
             ),
             Text(country == "" ? "Seçili dil : tr" : "Seçili dil : $country",
                 style:

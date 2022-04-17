@@ -22,7 +22,7 @@ class TranslateService {
           'X-RapidAPI-Key': '9d66e81587msh8110b5db8a31f76p1070e1jsn5a72a0f89eed'
         },
         body: message == ""
-            ? '[{"Text":"Please Write Any Text"}]'
+            ? '[{"Text":"İstediğiniz dilde yazabilirsiniz , yapay zeka yazdığınız dili algılar ve seçtiğiniz dile çevirir, Hadi Bir şeyler Yazın..!"}]'
             : '[{"Text":"$message"}]');
     if (response.statusCode == 200) {
       final post = jsonDecode(response.body);
