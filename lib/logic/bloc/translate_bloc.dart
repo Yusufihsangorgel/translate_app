@@ -27,7 +27,7 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
 
     on<TranslateFieldEvent>((event, emit) async {
       emit(TranslateLoadingState());
-      emit(state.copyWith(message: event.message));
+      //emit(state.copyWith(message: event.message));
 
       final translate = await _translateService.getTranslate(
         event.to,

@@ -8,6 +8,7 @@ class TranslateBody extends StatefulWidget {
 }
 
 class _TranslateBodyState extends State<TranslateBody> {
+  var message = "";
   var country = "";
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class _TranslateBodyState extends State<TranslateBody> {
       appBar: _appBar(),
       body: Center(
         child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

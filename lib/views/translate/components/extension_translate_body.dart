@@ -28,8 +28,28 @@ extension on _TranslateBodyState {
     return BlocBuilder<TranslateBloc, TranslateState>(
       builder: (context, state) {
         if (state is TranslateLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(24),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                width: context.width(0.76),
+                height: context.height(0.2),
+                padding: const EdgeInsets.all(8.0),
+                child: const Center(
+                    child: Text(
+                  "...",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                )),
+              ),
+            ),
           );
         }
         if (state is TranslateLoadedState) {
@@ -57,6 +77,9 @@ extension on _TranslateBodyState {
               ),
             ),
           );
+        }
+        if (state is TranslateNoInternetState) {
+          return const Center(child: Text('no internet :('));
         } else {
           return Container(
             decoration: BoxDecoration(
@@ -73,7 +96,7 @@ extension on _TranslateBodyState {
                 width: context.width(0.76),
                 height: context.height(0.2),
                 padding: const EdgeInsets.all(8.0),
-                child: Center(
+                child: const Center(
                     child: Text(
                   "...",
                   style: const TextStyle(
@@ -103,8 +126,9 @@ extension on _TranslateBodyState {
                 borderRadius: BorderRadius.circular(25),
               ),
             ),
-            onChanged: (message) {
+            onChanged: (newMessage) {
               setState(() {
+                message = newMessage;
                 context
                     .read<TranslateBloc>()
                     .add(TranslateFieldEvent(message, country));
@@ -139,8 +163,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "tr";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'tr');
                           },
@@ -150,8 +175,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "en";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context);
                           },
@@ -161,8 +187,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "de";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
 
                             Navigator.pop(context, 'de');
@@ -173,8 +200,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "fr";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'fr');
                           },
@@ -184,8 +212,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "ar";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'ar');
                           },
@@ -206,8 +235,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "tr";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'tr');
                           },
@@ -217,8 +247,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "en";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context);
                           },
@@ -228,8 +259,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "de";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
 
                             Navigator.pop(context, 'de');
@@ -240,8 +272,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "fr";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'fr');
                           },
@@ -251,8 +284,9 @@ extension on _TranslateBodyState {
                           onPressed: () {
                             setState(() {
                               country = "ar";
-                              context.read<TranslateBloc>().add(
-                                  TranslateFieldEvent(state.message, country));
+                              context
+                                  .read<TranslateBloc>()
+                                  .add(TranslateFieldEvent(message, country));
                             });
                             Navigator.pop(context, 'ar');
                           },
