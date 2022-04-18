@@ -224,9 +224,9 @@ extension on _TranslateBodyState {
                     ),
                   );
                 } else if (Platform.isAndroid) {
-                  showDialog<String>(
+                  showDialog(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
+                    builder: (_) => AlertDialog(
                       title: const Text(
                           'Yazdığınız Cümle Aşağıda Seçeceğiniz Dile Çevrilecektir'),
                       content: const Text('Dil Seçiniz'),
